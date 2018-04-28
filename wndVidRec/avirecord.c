@@ -12,7 +12,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 BOOL CALLBACK EnumChildProc(HWND hWnd, LPARAM lParam);
 VOID GenBitmap(HWND hWnd, BOOL first);
 
-TCHAR szClassName[] = TEXT("AVIRecorderWndClass2");
+WCHAR szClassName[] = L"AVIRecorderWndClass2";
 HWND hEditMS, hCompressChk, hAutoStopChk, hChooseWnd, hStart, hStop, hStatic, hStatic2;
 HWND hCapTargetWindow;
 INT msInt = 0;
@@ -21,41 +21,40 @@ INT runCount = 0;
 
 HAVI hAvi;
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+INT APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, INT nShowCmd)
 {
-	WNDCLASSEX wc;
+	WNDCLASSEXW wc;
 	MSG Msg;
 	HWND hWnd;
 	
-	wc.cbWndExtra = 0;
-	wc.cbClsExtra = 0;
-	wc.cbSize = sizeof(WNDCLASSEX);
+	ZeroMemory(&wc, sizeof(WNDCLASSEXW));
+
+	wc.cbSize = sizeof(WNDCLASSEXW);
 	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hCursor = LoadCursorW(NULL, IDC_ARROW);
+	wc.hIcon = 
+	wc.hIconSm = LoadIconW(NULL, IDI_APPLICATION);
 	wc.hInstance = hInstance;
 	wc.lpfnWndProc = WndProc;
 	wc.lpszClassName = szClassName;
 	wc.lpszMenuName = NULL;
-	wc.style = 0;
 
-	RegisterClassEx(&wc);
-
-	hWnd = CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, szClassName, TEXT("Window Recorder"), WS_VISIBLE | WS_SYSMENU, 100, 100, 350, 260, NULL, NULL, hInstance, NULL);
+	RegisterClassExW(&wc);
+	
+	hWnd = CreateWindowExW(WS_EX_OVERLAPPEDWINDOW, szClassName, L"Window Recorder", WS_VISIBLE | WS_SYSMENU, 100, 100, 350, 260, NULL, NULL, hInstance, NULL);
 
 	ShowWindow(hWnd, SW_SHOW);
 	EnumChildWindows(hWnd, EnumChildProc, 0);
 	UpdateWindow(hWnd);
 
 
-	while (GetMessage(&Msg, NULL, 0, 0) > 0)
+	while (GetMessageW(&Msg, NULL, 0, 0) > 0)
 	{
 		TranslateMessage(&Msg);
-		DispatchMessage(&Msg);
+		DispatchMessageW(&Msg);
 	}
 
-	return (int)Msg.wParam;
+	return (INT)Msg.wParam;
 
 }
 
@@ -123,15 +122,15 @@ VOID CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
 BOOL CALLBACK EnumChildProc(HWND hWnd, LPARAM lParam)
 {
 	HFONT hfDefault = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
-	SendMessage(hWnd, WM_SETFONT, (WPARAM)hfDefault, 0);
+	SendMessageW(hWnd, WM_SETFONT, (WPARAM)hfDefault, MAKELPARAM(TRUE, 0));
 	return TRUE;
 }
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	TCHAR wszInfo[1024];
-	HINSTANCE thisInstance = GetModuleHandle(NULL);
+	WCHAR wszInfo[1024];
+	HINSTANCE thisInstance = GetModuleHandleW(NULL);
 	switch (Msg)
 	{
 	case (WM_USER + 1):
@@ -140,12 +139,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		CloseAVI(hAvi);
 		break;
 	case WM_CREATE:
-		hStatic = CreateWindow(TEXT("STATIC"), TEXT("Resolution of capture in milliseconds: "), WS_VISIBLE | WS_CHILD | SS_LEFT, 10, 10, 330, 20, hWnd, NULL, thisInstance, NULL);
-		hEditMS = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT("500"), WS_VISIBLE | WS_CHILD | ES_NUMBER, 10, 30, 310, 20, hWnd, NULL, thisInstance, NULL);
-		hChooseWnd = CreateWindow(TEXT("BUTTON"), TEXT("Select Target Window..."), WS_VISIBLE | WS_CHILD | BS_TEXT | BS_PUSHBUTTON, 10, 90, 310, 30, hWnd, NULL, thisInstance, NULL);
-		hStart = CreateWindow(TEXT("BUTTON"), TEXT("Start"), WS_VISIBLE | WS_CHILD | BS_TEXT | BS_PUSHBUTTON | WS_DISABLED, 10, 120, 155, 30, hWnd, NULL, thisInstance, NULL);
-		hStop = CreateWindow(TEXT("BUTTON"), TEXT("Stop"), WS_VISIBLE | WS_CHILD | BS_TEXT | BS_PUSHBUTTON | WS_DISABLED, 165, 120, 155, 30, hWnd, NULL, thisInstance, NULL);
-		hStatic2 = CreateWindow(TEXT("STATIC"), TEXT("No window selected."), WS_VISIBLE | WS_CHILD | SS_LEFT , 10, 150, 310, 40, hWnd, NULL, thisInstance, NULL);
+		hStatic = CreateWindowW(L"Static", L"Resolution of capture in milliseconds: ", WS_VISIBLE | WS_CHILD | SS_LEFT, 10, 10, 330, 20, hWnd, NULL, thisInstance, NULL);
+		hEditMS = CreateWindowExW(WS_EX_CLIENTEDGE, L"Edit", L"500", WS_VISIBLE | WS_CHILD | ES_NUMBER, 10, 30, 310, 20, hWnd, NULL, thisInstance, NULL);
+		hChooseWnd = CreateWindowW(L"Button", L"Select Target Window...", WS_VISIBLE | WS_CHILD | BS_TEXT | BS_PUSHBUTTON, 10, 90, 310, 30, hWnd, NULL, thisInstance, NULL);
+		hStart = CreateWindowW(L"Button", L"Start", WS_VISIBLE | WS_CHILD | BS_TEXT | BS_PUSHBUTTON | WS_DISABLED, 10, 120, 155, 30, hWnd, NULL, thisInstance, NULL);
+		hStop = CreateWindowW(L"Button", L"Stop", WS_VISIBLE | WS_CHILD | BS_TEXT | BS_PUSHBUTTON | WS_DISABLED, 165, 120, 155, 30, hWnd, NULL, thisInstance, NULL);
+		hStatic2 = CreateWindowW(L"Static", L"No window selected.", WS_VISIBLE | WS_CHILD | SS_LEFT , 10, 150, 310, 40, hWnd, NULL, thisInstance, NULL);
 		break;
 	case WM_COMMAND:
 		if ((HWND)lParam == hChooseWnd)
@@ -153,17 +152,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 			POINT p;
 			RECT rect;
 			
-			TCHAR wszClass[64];
-			MessageBox(0, TEXT("After dismissing this message box, the target window will be chosen as the window under the mouse pointer after two seconds.  You may move this message box closer to the target window before closing it if need be.\n\nIf you are targeting a usual Windows application, hover the mouse over the *title bar* of the application.  If you are targeting a Java or Flash applet target anywhere within the applet."), TEXT("Pre-Capture Information"), MB_OK | MB_ICONINFORMATION);
+			WCHAR wszClass[64];
+			MessageBoxW(
+				NULL, 
+				L"After dismissing this message box, the target window will be chosen as the window under the mouse pointer after two seconds.  You may move this message box closer to the target window before closing it if need be.\n\nIf you are targeting a usual Windows application, hover the mouse over the *title bar* of the application.  If you are targeting a Java or Flash applet target anywhere within the applet.", 
+				L"Pre-Capture Information", 
+				MB_OK | MB_ICONINFORMATION);
 			Sleep(2000);
 			GetCursorPos(&p);
 			hCapTargetWindow = WindowFromPoint(p);
 			SetFocus(hCapTargetWindow);
 			BringWindowToTop(hCapTargetWindow);
 			GetWindowRect(hCapTargetWindow, &rect);
-			GetClassName(hCapTargetWindow, wszClass, 64);
-			StringCchPrintf(wszInfo, 1024, TEXT("Target: 0x%.8X \'%s\' (%d x %d)"), (INT)hCapTargetWindow, wszClass, rect.right - rect.left, rect.bottom - rect.top);
-			SetWindowText(hStatic2, wszInfo);
+			GetClassNameW(hCapTargetWindow, wszClass, 64);
+			StringCchPrintfW(wszInfo, 1024, L"Target: 0x%.8X \'%s\' (%d x %d)", (INT)hCapTargetWindow, wszClass, rect.right - rect.left, rect.bottom - rect.top);
+			SetWindowTextW(hStatic2, wszInfo);
 			EnableWindow(hStart, TRUE);
 			EnableWindow(hStop, FALSE);
 			
@@ -173,7 +176,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		else if ((HWND)lParam == hStart)
 		{
 			HANDLE hHeap;
-			TCHAR *eTxt, fName[48];
+			WCHAR *eTxt, fName[48];
 			INT msLen;
 			SYSTEMTIME st;
 			GetSystemTime(&st);
@@ -181,14 +184,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 			EnableWindow(hStart, FALSE);
 			EnableWindow(hStop, TRUE);
 			EnableWindow(hChooseWnd, FALSE);
-			msLen = GetWindowTextLength(hEditMS);
-			eTxt = (TCHAR*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, msLen + 1);
-			_stscanf_s(eTxt, TEXT("%d"), &msInt);
+			msLen = GetWindowTextLengthW(hEditMS);
+			eTxt = (WCHAR*)HeapAlloc(hHeap, HEAP_ZERO_MEMORY, msLen + 1);
+			swscanf_s(eTxt, L"%d", &msInt);
 			if (msInt < 1) msInt = 1;
 			HeapFree(hHeap, 0, eTxt);
 			CloseHandle(hHeap);
 			
-			StringCchPrintf(fName, 48, TEXT("%hu-%hu-%hu %hu-%hu-%hu-%hu.avi"), st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
+			StringCchPrintfW(fName, 48, L"%hu-%hu-%hu %hu-%hu-%hu-%hu.avi", st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 			hAvi = CreateAVI(fName, 1);
 			
 			SetTimer(hWnd, IDT_TIMER1, msInt, TimerProc);
@@ -199,7 +202,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 			EnableWindow(hStart, TRUE);
 			EnableWindow(hStop, FALSE);
 			EnableWindow(hChooseWnd, TRUE);
-			SendMessage(hWnd, WM_USER + 1, 0, 0);
+			SendMessageW(hWnd, WM_USER + 1, 0, 0);
 		}
 		break;
 	case WM_CLOSE:
@@ -209,7 +212,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	default:
-		return DefWindowProc(hWnd, Msg, wParam, lParam);
+		return DefWindowProcW(hWnd, Msg, wParam, lParam);
 	}
 	return 0;
 }

@@ -15,14 +15,14 @@ HRESULT CloseAVI(HAVI hAvi)
 	return S_OK;
 }
 
-HAVI CreateAVI(TCHAR *fileName, INT period)
+HAVI CreateAVI(WCHAR *fileName, INT period)
 {
 	IAVIFile *pFile;
 	HRESULT hr;
 	AVI_INFO *ai = new AVI_INFO;
 
 	AVIFileInit();
-	hr = AVIFileOpen(&pFile, fileName, OF_WRITE | OF_CREATE, NULL);
+	hr = AVIFileOpenW(&pFile, fileName, OF_WRITE | OF_CREATE, NULL);
 	if (hr != AVIERR_OK)
 	{
 		AVIFileExit();
@@ -42,7 +42,7 @@ HAVI CreateAVI(TCHAR *fileName, INT period)
 HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate)
 {
 	DIBSECTION dbs;
-	INT sBitmap = GetObject(hBitmap, sizeof(dbs), &dbs);
+	INT sBitmap = GetObjectW(hBitmap, sizeof(dbs), &dbs);
 	AVI_INFO *ai = (AVI_INFO*)hAvi;
 	HRESULT hr;
 
@@ -56,7 +56,7 @@ HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate)
 		asInfo.dwRate = (DWORD)24;
 		asInfo.dwSuggestedBufferSize = dbs.dsBmih.biSizeImage;
 		SetRect(&asInfo.rcFrame, 0, 0, dbs.dsBmih.biWidth, dbs.dsBmih.biHeight);
-		hr = AVIFileCreateStream(ai->pFile, &ai->pStream, &asInfo);
+		hr = AVIFileCreateStreamW(ai->pFile, &ai->pStream, &asInfo);
 		if (hr != AVIERR_OK) return hr;
 	}
 
@@ -82,7 +82,7 @@ HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate)
 HRESULT AVISetCompressionMode(HAVI hAvi, HBITMAP hBitmap, AVICOMPRESSOPTIONS *acOpt, DWORD dwRate)
 {
 	DIBSECTION dbs;
-	INT sBitmap = GetObject(hBitmap, sizeof(dbs), &dbs);
+	INT sBitmap = GetObjectW(hBitmap, sizeof(dbs), &dbs);
 	AVI_INFO *ai = (AVI_INFO*)hAvi;
 	HRESULT hr;
 
@@ -96,7 +96,7 @@ HRESULT AVISetCompressionMode(HAVI hAvi, HBITMAP hBitmap, AVICOMPRESSOPTIONS *ac
 		asInfo.dwRate = (DWORD)24;
 		asInfo.dwSuggestedBufferSize = dbs.dsBmih.biSizeImage;
 		SetRect(&asInfo.rcFrame, 0, 0, dbs.dsBmih.biWidth, dbs.dsBmih.biHeight);
-		hr = AVIFileCreateStream(ai->pFile, &ai->pStream, &asInfo);
+		hr = AVIFileCreateStreamW(ai->pFile, &ai->pStream, &asInfo);
 		if (hr != AVIERR_OK)
 		{
 			return hr;

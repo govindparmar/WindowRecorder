@@ -20,7 +20,7 @@ extern "C"
 		ULONG nSample;
 	};
 
-	HAVI CreateAVI(TCHAR *fileName, INT period);
+	HAVI CreateAVI(WCHAR *fileName, INT period);
 	HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate);
 	HRESULT AVISetCompressionMode(HAVI hAvi, HBITMAP hBitmap, AVICOMPRESSOPTIONS *acOpt, DWORD dwRate);
 	HRESULT CloseAVI(HAVI hAvi);
