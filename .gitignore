@@ -44,3 +44,5 @@ Temporary Items
 *.ipch
 *.db
 *.opendb
+*.suo
+*.sqlite
