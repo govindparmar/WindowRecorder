@@ -46,3 +46,10 @@ Temporary Items
 *.opendb
 *.suo
 *.sqlite
+/.vs/wndVidRec
+/Debug
+/Release
+/wndVidRec/Debug
+/wndVidRec/Release
+/wndVidRec/2023-3-31 21-31-33-766.avi
+/wndVidRec/2023-3-31 21-20-25-124.avi
