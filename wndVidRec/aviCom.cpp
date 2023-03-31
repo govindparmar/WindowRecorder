@@ -2,6 +2,7 @@
 #include <Vfw.h>
 #include "aviCom.h"
 
+
 HRESULT CloseAVI(HAVI hAvi)
 {
 	if (hAvi == NULL || hAvi == INVALID_HANDLE_VALUE) return AVIERR_BADHANDLE;
