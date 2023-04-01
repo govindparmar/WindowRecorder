@@ -9,7 +9,7 @@ extern "C"
 
 	DECLARE_HANDLE(HAVI);
 
-	struct AVI_INFO
+	typedef struct _AVI_INFO
 	{
 		IAVIFile *pFile;
 		INT period;
@@ -18,7 +18,7 @@ extern "C"
 		IAVIStream *pStCmp;
 		ULONG nFrame;
 		ULONG nSample;
-	};
+	} AVI_INFO, *PAVI_INFO;
 
 	HAVI CreateAVI(WCHAR *fileName, INT period);
 	HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate);

@@ -21,3 +21,4 @@ INT APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 EXTERN CONST WCHAR g_wszClassName[];
 EXTERN CONST WCHAR g_wszMutexName[];
+EXTERN BOOL g_fFirstFrame;

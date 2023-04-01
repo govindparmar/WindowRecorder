@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <Vfw.h>
 #include "aviCom.h"
-
+#include "macros.h"
 
 HRESULT CloseAVI(HAVI hAvi)
 {
@@ -43,18 +43,19 @@ HAVI CreateAVI(WCHAR *fileName, INT period)
 HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate)
 {
 	DIBSECTION dbs;
-	INT sBitmap = GetObjectW(hBitmap, sizeof(dbs), &dbs);
+	INT sBitmap = GetObjectW(hBitmap, sizeof(DIBSECTION), &dbs);
 	AVI_INFO *ai = (AVI_INFO*)hAvi;
 	HRESULT hr;
 
 	if (ai->pStream == NULL)
 	{
-		AVISTREAMINFO asInfo;
-		SecureZeroMemory(&asInfo, sizeof(AVISTREAMINFO));
+		AVISTREAMINFOW asInfo;
+		ZeroMemory(&asInfo, sizeof(AVISTREAMINFOW));
 		asInfo.fccType = streamtypeVIDEO;
-		asInfo.fccHandler = 0;
+		asInfo.fccHandler = CODEC_CHARS; // Originally 0
 		asInfo.dwScale = ai->period;
-		asInfo.dwRate = (DWORD)24;
+		//asInfo.dwRate = (DWORD)24;
+		asInfo.dwRate = dwRate;
 		asInfo.dwSuggestedBufferSize = dbs.dsBmih.biSizeImage;
 		SetRect(&asInfo.rcFrame, 0, 0, dbs.dsBmih.biWidth, dbs.dsBmih.biHeight);
 		hr = AVIFileCreateStreamW(ai->pFile, &ai->pStream, &asInfo);
@@ -65,8 +66,8 @@ HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate)
 	{
 		AVICOMPRESSOPTIONS acOpt;
 		HRESULT hr;
-		SecureZeroMemory(&acOpt, sizeof(AVICOMPRESSOPTIONS));
-		acOpt.fccHandler = mmioFOURCC('C', 'V', 'I', 'D');
+		ZeroMemory(&acOpt, sizeof(AVICOMPRESSOPTIONS));
+		acOpt.fccHandler = CODEC_CHARS;
 		hr = AVIMakeCompressedStream(&ai->pStCmp, ai->pStream, &acOpt, NULL);
 		if (hr != AVIERR_OK) return hr;
 		hr = AVIStreamSetFormat(ai->pStCmp, 0, &dbs.dsBmih, dbs.dsBmih.biSize + dbs.dsBmih.biClrUsed*sizeof(RGBQUAD));
@@ -77,7 +78,7 @@ HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate)
 	if (hr != AVIERR_OK) return hr;
 	ai->nFrame++;
 
-	return S_OK;
+	return S_OK; 
 }
 
 HRESULT AVISetCompressionMode(HAVI hAvi, HBITMAP hBitmap, AVICOMPRESSOPTIONS *acOpt, DWORD dwRate)
@@ -89,12 +90,13 @@ HRESULT AVISetCompressionMode(HAVI hAvi, HBITMAP hBitmap, AVICOMPRESSOPTIONS *ac
 
 	if (ai->pStream == NULL)
 	{
-		AVISTREAMINFO asInfo;
-		SecureZeroMemory(&asInfo, sizeof(AVISTREAMINFO));
+		AVISTREAMINFOW asInfo;
+		ZeroMemory(&asInfo, sizeof(AVISTREAMINFOW));
 		asInfo.fccType = streamtypeVIDEO;
-		asInfo.fccHandler = 0;
+		asInfo.fccHandler = CODEC_CHARS; // Originally 0
 		asInfo.dwScale = ai->period;
-		asInfo.dwRate = (DWORD)24;
+		//asInfo.dwRate = (DWORD)24;
+		asInfo.dwRate = dwRate;
 		asInfo.dwSuggestedBufferSize = dbs.dsBmih.biSizeImage;
 		SetRect(&asInfo.rcFrame, 0, 0, dbs.dsBmih.biWidth, dbs.dsBmih.biHeight);
 		hr = AVIFileCreateStreamW(ai->pFile, &ai->pStream, &asInfo);
@@ -108,7 +110,7 @@ HRESULT AVISetCompressionMode(HAVI hAvi, HBITMAP hBitmap, AVICOMPRESSOPTIONS *ac
 	else
 	{
 		AVICOMPRESSOPTIONS newOpt, *farOpt[1];
-		SecureZeroMemory(&newOpt, sizeof(AVICOMPRESSOPTIONS));
+		ZeroMemory(&newOpt, sizeof(AVICOMPRESSOPTIONS));
 		if (acOpt != NULL)
 		{
 			farOpt[0] = acOpt;
