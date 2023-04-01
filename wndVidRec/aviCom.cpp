@@ -3,7 +3,9 @@
 #include "aviCom.h"
 #include "macros.h"
 
-HRESULT CloseAVI(HAVI hAvi)
+_Success_(SUCCEEDED(return))
+
+HRESULT CloseAVI(_In_ HAVI hAvi)
 {
 	if (hAvi == NULL || hAvi == INVALID_HANDLE_VALUE) return AVIERR_BADHANDLE;
 	AVI_INFO *ai = (AVI_INFO*)hAvi;
@@ -16,7 +18,9 @@ HRESULT CloseAVI(HAVI hAvi)
 	return S_OK;
 }
 
-HAVI CreateAVI(WCHAR *fileName, INT period)
+_Success_(SUCCEEDED(return))
+
+HAVI CreateAVI(_In_z_ WCHAR *fileName, _In_ INT period)
 {
 	IAVIFile *pFile;
 	HRESULT hr;
@@ -40,7 +44,7 @@ HAVI CreateAVI(WCHAR *fileName, INT period)
 	return (HAVI)ai;
 }
 
-HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate)
+HRESULT AVIAddFrame(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ DWORD dwRate)
 {
 	DIBSECTION dbs;
 	INT sBitmap = GetObjectW(hBitmap, sizeof(DIBSECTION), &dbs);
@@ -81,7 +85,9 @@ HRESULT AVIAddFrame(HAVI hAvi, HBITMAP hBitmap, DWORD dwRate)
 	return S_OK; 
 }
 
-HRESULT AVISetCompressionMode(HAVI hAvi, HBITMAP hBitmap, AVICOMPRESSOPTIONS *acOpt, DWORD dwRate)
+_Success_(SUCCEEDED(return))
+
+HRESULT AVISetCompressionMode(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ AVICOMPRESSOPTIONS *acOpt, _In_ DWORD dwRate)
 {
 	DIBSECTION dbs;
 	INT sBitmap = GetObjectW(hBitmap, sizeof(dbs), &dbs);
