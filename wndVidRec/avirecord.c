@@ -15,7 +15,7 @@
 #else
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
-// HL: @, GH, (?) HS, WH, BH
+
 #define IDT_TIMER1 1001
 
 CONST WCHAR g_wszClassName[] = L"AVIRecorderWndClass2";
@@ -80,7 +80,7 @@ INT APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 }
 
-VOID GenBitmap(HWND hWnd, BOOL first)
+VOID GenBitmap(_In_ HWND hWnd, _In_ BOOL first)
 {
 	BITMAPINFOHEADER biHeader;
 	BITMAPINFO bInfo;
@@ -105,13 +105,7 @@ VOID GenBitmap(HWND hWnd, BOOL first)
 	biHeader.biCompression = BI_RGB; 
 	biHeader.biHeight = yDir; 
 	biHeader.biWidth = xDir;
-	biHeader.biPlanes = 1; 
-	//biHeader.biSizeImage = bLength; 
-	//biHeader.biXPelsPerMeter = xDir*50;
-	//biHeader.biYPelsPerMeter = yDir*50;
-	
-	//biHeader.biClrImportant = 0;
-	//biHeader.biClrUsed = 0;
+	biHeader.biPlanes = 1;
 
 	bInfo.bmiHeader = biHeader;
 
@@ -144,7 +138,7 @@ VOID GenBitmap(HWND hWnd, BOOL first)
 	DeleteObject(hBitmap);
 }
 
-VOID CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
+VOID CALLBACK TimerProc(_In_ HWND hWnd, _In_ UINT uMsg, _In_ UINT_PTR idEvent, _In_ DWORD dwTime)
 {
 	GenBitmap(hCapTargetWindow, g_fFirstFrame);
 	if (g_fFirstFrame)
@@ -153,7 +147,7 @@ VOID CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
 	}
 }
 
-BOOL CALLBACK EnumChildProc(HWND hWnd, LPARAM lParam)
+BOOL CALLBACK EnumChildProc(_In_ HWND hWnd, _In_ LPARAM lParam)
 {
 	HFONT hfDefault = *(HFONT *) lParam;
 	SendMessageW(hWnd, WM_SETFONT, (WPARAM)hfDefault, MAKELPARAM(TRUE, 0));
@@ -287,7 +281,7 @@ VOID WINAPI OnPaint(_In_ HWND hWnd)
 	return;
 }
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WindowProc(_In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam)
 {
 	switch (Msg)
 	{
