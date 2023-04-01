@@ -5,7 +5,7 @@
 
 _Success_(SUCCEEDED(return))
 
-HRESULT CloseAVI(_In_ HAVI hAvi)
+HRESULT WINAPI CloseAVI(_In_ HAVI hAvi)
 {
 	if (hAvi == NULL || hAvi == INVALID_HANDLE_VALUE) return AVIERR_BADHANDLE;
 	AVI_INFO *ai = (AVI_INFO*)hAvi;
@@ -20,7 +20,7 @@ HRESULT CloseAVI(_In_ HAVI hAvi)
 
 _Success_(SUCCEEDED(return))
 
-HAVI CreateAVI(_In_z_ WCHAR *fileName, _In_ INT period)
+HAVI WINAPI CreateAVI(_In_z_ WCHAR *fileName, _In_ INT period)
 {
 	IAVIFile *pFile;
 	HRESULT hr;
@@ -44,7 +44,7 @@ HAVI CreateAVI(_In_z_ WCHAR *fileName, _In_ INT period)
 	return (HAVI)ai;
 }
 
-HRESULT AVIAddFrame(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ DWORD dwRate)
+HRESULT WINAPI AVIAddFrame(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ DWORD dwRate)
 {
 	DIBSECTION dbs;
 	INT sBitmap = GetObjectW(hBitmap, sizeof(DIBSECTION), &dbs);
@@ -87,7 +87,7 @@ HRESULT AVIAddFrame(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ DWORD dwRate)
 
 _Success_(SUCCEEDED(return))
 
-HRESULT AVISetCompressionMode(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ AVICOMPRESSOPTIONS *acOpt, _In_ DWORD dwRate)
+HRESULT WINAPI AVISetCompressionMode(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ AVICOMPRESSOPTIONS *acOpt, _In_ DWORD dwRate)
 {
 	DIBSECTION dbs;
 	INT sBitmap = GetObjectW(hBitmap, sizeof(dbs), &dbs);

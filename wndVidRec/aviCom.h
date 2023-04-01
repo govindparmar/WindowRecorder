@@ -22,16 +22,16 @@ extern "C"
 
 	_Success_(SUCCEEDED(return))
 
-	HAVI CreateAVI(_In_z_ WCHAR *fileName, _In_ INT period);
-	HRESULT AVIAddFrame(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ DWORD dwRate);
+	HAVI WINAPI CreateAVI(_In_z_ WCHAR *fileName, _In_ INT period);
+	HRESULT WINAPI AVIAddFrame(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ DWORD dwRate);
 	
 	_Success_(SUCCEEDED(return))
 
-	HRESULT AVISetCompressionMode(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ AVICOMPRESSOPTIONS *acOpt, _In_ DWORD dwRate);
+	HRESULT WINAPI AVISetCompressionMode(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ AVICOMPRESSOPTIONS *acOpt, _In_ DWORD dwRate);
 
 	_Success_(SUCCEEDED(return))
 
-	HRESULT CloseAVI(_In_ HAVI hAvi);
+	HRESULT WINAPI CloseAVI(_In_ HAVI hAvi);
 
 #ifdef __cplusplus
 }
