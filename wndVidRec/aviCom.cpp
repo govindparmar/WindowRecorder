@@ -119,7 +119,7 @@ HRESULT WINAPI AVISetCompressionMode(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ 
 {
 	DIBSECTION dbs;
 	INT sBitmap = GetObjectW(hBitmap, sizeof(dbs), &dbs);
-	AVI_INFO *ai = (AVI_INFO*)hAvi;
+	AVI_INFO *ai = (AVI_INFO *)hAvi;
 	HRESULT hr;
 
 	if (ai->pStream == NULL)
@@ -157,11 +157,11 @@ HRESULT WINAPI AVISetCompressionMode(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ 
 			farOpt[0] = &newOpt;
 		}
 		hr = AVIMakeCompressedStream(&ai->pStCmp, ai->pStream, farOpt[0], NULL);
-		AVISaveOptionsFree(1, farOpt);
 		if (FAILED(hr))
 		{
 			return hr;
 		}
+		AVISaveOptionsFree(1, farOpt);
 		hr = AVIStreamSetFormat(ai->pStCmp, 0, &dbs.dsBmih, dbs.dsBmih.biSize + dbs.dsBmih.biClrUsed * sizeof(RGBQUAD));
 		if (FAILED(hr))
 		{

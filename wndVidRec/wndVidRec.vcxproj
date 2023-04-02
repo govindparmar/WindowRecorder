@@ -82,7 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aviCom.cpp" />
-    <ClCompile Include="avirecord.c" />
+    <ClCompile Include="mainwindow.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aviCom.h" />

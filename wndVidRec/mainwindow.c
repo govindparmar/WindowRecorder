@@ -69,7 +69,6 @@ INT APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	EnumChildWindows(hWnd, EnumChildProc, (LPARAM)&hfDefault);
 	UpdateWindow(hWnd);
 
-
 	while (GetMessageW(&Msg, NULL, 0, 0) > 0)
 	{
 		TranslateMessage(&Msg);
@@ -111,7 +110,7 @@ VOID GenBitmap(_In_ HWND hWnd, _In_ BOOL first)
 
 	wDC = GetWindowDC(hWnd);
 	tempDC = CreateCompatibleDC(wDC);
-	hBitmap = CreateDIBSection(wDC, &bInfo, DIB_RGB_COLORS, (void**)&bmpBits, NULL, 0);
+	hBitmap = CreateDIBSection(wDC, &bInfo, DIB_RGB_COLORS, (VOID**)&bmpBits, NULL, 0);
 	if (NULL == hBitmap)
 	{
 		return;
