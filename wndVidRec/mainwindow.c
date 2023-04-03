@@ -122,15 +122,14 @@ VOID GenBitmap(_In_ HWND hWnd, _In_ BOOL first)
 		AVICOMPRESSOPTIONS acOpt;
 		//HRESULT hr;
 		ZeroMemory(&acOpt, sizeof(AVICOMPRESSOPTIONS));
-		acOpt.fccHandler = mmioFOURCC('M', 'S', 'V', 'C');
-		/*hr = */AVISetCompressionMode(hAvi, hBitmap, &acOpt, msInt);
+		acOpt.fccHandler = CODEC_CHARS; // Originally mmioFOURCC('M', 'S', 'V', 'C');
+		AVISetCompressionMode(hAvi, hBitmap, &acOpt, msInt);
 		AVIAddFrame(hAvi, hBitmap, msInt);
 		
 	}
 	else
 	{
-		/*HRESULT hr = */ AVIAddFrame(hAvi, hBitmap, msInt);
-		
+		AVIAddFrame(hAvi, hBitmap, msInt);
 	}
 	DeleteDC(tempDC);
 	ReleaseDC(hWnd, wDC);
@@ -191,17 +190,17 @@ VOID WINAPI OnCommand(_In_ HWND hWnd, _In_ INT nID, _In_ HWND hwSource, _In_ UIN
 
 		MessageBoxW(
 			NULL,
-			L"After dismissing this message box, the target window will be chosen as the window under the mouse pointer after two seconds.  You may move this message box closer to the target window before closing it if need be.\n\nIf you are targeting a usual Windows application, hover the mouse over the *title bar* of the application.  If you are targeting a Java or Flash applet target anywhere within the applet.",
+			L"After dismissing this message box, the target window will be chosen as the window under the mouse pointer after 3.5 seconds.",
 			L"Pre-Capture Information",
 			MB_OK | MB_ICONINFORMATION);
-		Sleep(2000);
+		Sleep(3500);
 		GetCursorPos(&p);
 		hCapTargetWindow = WindowFromPoint(p);
 		SetFocus(hCapTargetWindow);
 		BringWindowToTop(hCapTargetWindow);
 		GetWindowRect(hCapTargetWindow, &rect);
 		GetClassNameW(hCapTargetWindow, wszClass, 64);
-		StringCchPrintfW(wszInfo, 1024, L"Target: 0x%.8X \'%s\' (%d x %d)", (INT) hCapTargetWindow, wszClass, rect.right - rect.left, rect.bottom - rect.top);
+		StringCchPrintfW(wszInfo, 1024, L"Target: 0x%.8X \'%s\' (%I32d x %I32d)", (INT) hCapTargetWindow, wszClass, rect.right - rect.left, rect.bottom - rect.top);
 		SetWindowTextW(hStatic2, wszInfo);
 		EnableWindow(hStart, TRUE);
 		EnableWindow(hStop, FALSE);
@@ -251,7 +250,6 @@ VOID WINAPI OnCommand(_In_ HWND hWnd, _In_ INT nID, _In_ HWND hwSource, _In_ UIN
 		EnableWindow(hStart, TRUE);
 		EnableWindow(hStop, FALSE);
 		EnableWindow(hChooseWnd, TRUE);
-		//SendMessageW(hWnd, WM_USER + 1, 0, 0);
 		KillTimer(hWnd, IDT_TIMER1);
 		Sleep(10);
 		CloseAVI(hAvi);

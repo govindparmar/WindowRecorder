@@ -20,9 +20,12 @@ extern "C"
 		ULONG nSample;
 	} AVI_INFO, *PAVI_INFO;
 
+	_Success_(return != (HAVI)INVALID_HANDLE_VALUE)
+
+	HAVI WINAPI CreateAVI(_In_reads_or_z_(MAX_PATH) WCHAR *fileName, _In_ INT period);
+
 	_Success_(SUCCEEDED(return))
 
-	HAVI WINAPI CreateAVI(_In_z_ WCHAR *fileName, _In_ INT period);
 	HRESULT WINAPI AVIAddFrame(_In_ HAVI hAvi, _In_ HBITMAP hBitmap, _In_ DWORD dwRate);
 	
 	_Success_(SUCCEEDED(return))

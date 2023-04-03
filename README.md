@@ -1,3 +1,4 @@
 # WindowRecorder
-Records an .AVI file of a target Window.
-Useful for analysing pixel data in browser-based games, and for creating demonstration/training videos.
+Records an .AVI file of a target window.
+
+Note that this program produces uncompressed .AVI files, which are very large.

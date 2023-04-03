@@ -4,8 +4,7 @@
 #include <commctrl.h>
 #include <Vfw.h>
 #include <strsafe.h>
-
-#define EXTERN extern
+#include "macros.h"
 
 BOOL CALLBACK EnumChildProc(_In_ HWND hWnd, _In_ LPARAM lParam);
 VOID GenBitmap(_In_ HWND hWnd, _In_ BOOL first);
